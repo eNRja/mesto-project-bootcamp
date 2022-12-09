@@ -1,0 +1,22 @@
+.popup__btn-escape {
+    position: absolute;
+    max-width: 32px;
+    max-height: 32px;
+    margin-top: -40px;
+    margin-left: 438px;
+    transition: 0.3s;
+}
+
+.popup__btn-escape:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+@media (max-width: 689px) {
+    .popup__btn-escape {
+        max-width: 20px;
+        max-height: 20px;
+        margin-top: -36px;
+        margin-left: 262px;
+    }
+}

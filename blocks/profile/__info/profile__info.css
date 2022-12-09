@@ -1,0 +1,10 @@
+.profile__info {
+    display: flex;
+    color: #fff;
+    max-width: 350px;
+    
+}
+
+.profile__info:nth-child(2) {
+    flex-wrap: wrap;
+}
