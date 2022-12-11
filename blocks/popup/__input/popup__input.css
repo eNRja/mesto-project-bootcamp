@@ -1,21 +1,25 @@
-.popup__edit-text {
+.popup__input {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
     color: #000000;
+    border: none;
     border-bottom: 1px solid rgba(0, 0, 0, .2);
-    margin: 0 auto 48px;
-    min-width: 358px;
+    max-width: 358px;
     min-height: 27px;
+    text-align: initial;
+    margin-bottom: 27px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 358px;
 }
 
 @media (max-width: 689px) {
-    .popup__edit-text {
+    .popup__input {
         min-width: 238px;
-        margin: 0 auto 45px;
-        font-size: 14px;
-        line-height: 17px;
+        margin: 0 auto 28px;
     }
 }

@@ -5,6 +5,11 @@
     height: 50px;
     margin: 35px 0 35px auto;
     transition: 0.3s;
+    background-color: #000;
+    background-image: url(../../../images/plus.png);
+    background-size: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .profile__add-button:hover {
@@ -16,7 +21,7 @@
 @media (max-width: 689px) {
     .profile__add-button {
         min-width: 282px;
-        min-height: 50px;
         margin: 28px auto 36px;
+        background-size: 16px;
     }
 }
