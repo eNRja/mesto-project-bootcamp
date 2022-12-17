@@ -8,7 +8,7 @@
 }
 
 @media (max-width: 689px) {
-    .popup__image-container {
+    .popup__picture-container {
         max-width: 240px;
     }
 }
