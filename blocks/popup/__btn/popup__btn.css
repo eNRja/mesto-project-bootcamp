@@ -1,4 +1,4 @@
-.popup__btn-submit {
+.popup__btn {
     display: flex;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -17,14 +17,14 @@
     border: none;
 }
 
-.popup__btn-submit:hover {
+.popup__btn:hover {
     cursor: pointer;
     opacity: 0.8;
     border-radius: 2px;
 }
 
 @media (max-width: 689px) {
-    .popup__btn-submit {
+    .popup__btn {
         min-width: 238px;
         min-height: 46px;
         margin-top: 17px;

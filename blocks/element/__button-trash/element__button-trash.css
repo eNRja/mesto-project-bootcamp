@@ -1,0 +1,18 @@
+.element__button-trash {
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 244px;
+    transition: 0.3s;
+    min-width: 18px;
+    min-height: 19px;
+    border: none;
+    background-color: rgb(0,0,0,0);
+    background-image: url(../../../images/delete_icon.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.element__button-trash:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}

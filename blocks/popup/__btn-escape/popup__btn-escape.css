@@ -1,7 +1,7 @@
 .popup__btn-escape {
     position: absolute;
-    margin-top: -40px;
-    margin-left: 438px;
+    top: -40px;
+    right: -40px;
     transition: 0.3s;
     min-width: 32px;
     min-height: 32px;
@@ -10,7 +10,6 @@
     background-image: url(../../../images/Close_Icon.png);
     background-size: cover;
     background-repeat: no-repeat;
-    
 }
 
 .popup__btn-escape:hover {
@@ -22,7 +21,7 @@
     .popup__btn-escape {
         min-width: 20px;
         min-height: 20px;
-        margin-top: -36px;
-        margin-left: 262px;
+        top: -36px;
+        right: 0;
     }
 }

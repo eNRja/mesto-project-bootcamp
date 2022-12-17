@@ -1,7 +1,7 @@
 .footer {
     display: flex;
     min-width: 880px;
-    margin: 40px auto 60px;
+    margin: 60px auto 60px;
 }
 
 @media (max-width: 900px) {
@@ -13,6 +13,6 @@
 @media (max-width: 689px) {
     .footer {
         min-width: 282px;
-        margin: 28px auto 36px;
+        margin: 48px auto 36px;
     }
 }
