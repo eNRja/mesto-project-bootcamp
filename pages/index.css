@@ -46,3 +46,5 @@
 @import url(../blocks/popup/__btn/popup__btn.css);
 @import url(../blocks/popup/__btn/_save/popup__btn_save.css);
 @import url(../blocks/popup/__btn/_submit/popup__btn_submit.css);
+@import url(../blocks/popup/__form/_add-card/popup__form_add-card.css);
+@import url(../blocks/popup/__form/_edit-profile/popup__form_edit-profile.css);

@@ -18,6 +18,7 @@ const popupInputPlace = document.querySelector('.popup__input_place');
 const popupInputUrl = document.querySelector('.popup__input_url');
 const popupInputName = document.querySelector('.popup__input_name');
 const popupInputText = document.querySelector('.popup__input_text');
+const popupFormAddCard = document.querySelector('.popup__form_add-card');
 
 //Создать карточку
 const createCard = (data) => {
@@ -68,7 +69,8 @@ const closePopup = (element) => {
 }
 
 //Ожидание нажатия на кнопку создать
-btnSubmit.addEventListener("click", () => {
+popupFormAddCard.addEventListener("submit", (event) => {
+    event.preventDefault()
     renderCard((popupInputPlace.value), (popupInputUrl.value));
     closePopup(popupAddCard);
     popupInputPlace.value = '';
