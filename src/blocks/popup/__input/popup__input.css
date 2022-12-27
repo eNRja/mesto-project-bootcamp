@@ -6,11 +6,9 @@
     line-height: 17px;
     color: #000000;
     border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, .2);
     max-width: 358px;
     min-height: 27px;
     text-align: initial;
-    margin-bottom: 27px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -22,4 +20,9 @@
         min-width: 238px;
         margin: 0 auto 28px;
     }
+}
+
+.popup__input:active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
 }

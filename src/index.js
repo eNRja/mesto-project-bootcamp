@@ -1,3 +1,8 @@
+import './pages/index.css';
+import { renderCard } from './components/card.js';
+import { enableValidation } from './components/validate.js'
+import { listenDocument } from './components/modal.js';
+
 const initialCards = [
     {
         name: 'Архыз',
@@ -24,3 +29,19 @@ const initialCards = [
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
 ];
+
+const config = {
+    formSelector: '.popup__form',
+    form: '.form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__btn',
+    inactiveButtonClass: 'popup__btn_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'form__input-error_active'
+};
+
+export const {formSelector, form, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass} = config;
+
+listenDocument();
+initialCards.reverse().forEach((data) => renderCard(data));
+enableValidation(config);
