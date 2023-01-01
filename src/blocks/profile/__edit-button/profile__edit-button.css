@@ -21,9 +21,9 @@
 
 @media (max-width: 689px) {
     .profile__edit-button {
-        max-width: 16px;
-        max-height: 16px;
-        margin: auto 15% auto 10px;
+        width: 18px;
+        height: 18px;
+        margin: auto auto auto 0;
         background-size: 7.5px;
     }
 }

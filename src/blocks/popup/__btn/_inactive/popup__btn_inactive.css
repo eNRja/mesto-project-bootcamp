@@ -7,6 +7,6 @@
 }
 
 .popup__btn_inactive:hover {
-    cursor: pointer;
+    cursor: default;
     opacity: 0.2;
 }

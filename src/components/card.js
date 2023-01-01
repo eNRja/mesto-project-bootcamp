@@ -1,10 +1,10 @@
-import {openPopup} from './utils.js'
+import {openPopup} from './modal.js'
 
 const elements = document.querySelector(".elements__list");
 const template = document.querySelector("#element").content.querySelector(".element");
 const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
-export const popupPicture = document.querySelector('.popup_picture');
+const popupPicture = document.querySelector('.popup_picture');
 
 const createCard = (data) => {
     const card = template.cloneNode(true);
@@ -14,7 +14,7 @@ const createCard = (data) => {
     elementFindImage.alt = data.name;
     card.querySelector(".element__button-trash").addEventListener("click", handleDeleteCard);
     card.querySelector(".element__button-heart").addEventListener("click", handleActivateLikeCard);
-    card.querySelector(".element__image").addEventListener("click", () => handlePicture(elementFindImage));
+    elementFindImage.addEventListener("click", () => handlePicture(data));
     return card;
 };
 
@@ -27,10 +27,9 @@ const handleActivateLikeCard = (event) => {
 };
 
 const handlePicture = (data) => {
-    const elementFindImage = data.closest('.element__image');
-    popupImage.src = elementFindImage.src;
-    popupImage.alt = elementFindImage.alt;
-    popupCaption.textContent = data.closest('.element').querySelector('.element__group').querySelector('.element__title').textContent;
+    popupImage.src = data.link;
+    popupImage.alt = data.name;
+    popupCaption.textContent = data.name;
     openPopup(popupPicture);
 }
 

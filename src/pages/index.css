@@ -47,6 +47,8 @@
 @import url(../blocks/popup/__btn/_submit/popup__btn_submit.css);
 @import url(../blocks/popup/__form/_add-card/popup__form_add-card.css);
 @import url(../blocks/popup/__form/_edit-profile/popup__form_edit-profile.css);
+@import url(../blocks/form/__input-error/_up/form__input-error_down.css);
+@import url(../blocks/form/__input-error/_down/form__input-error_down.css);
 @import url(../blocks/form/form.css);
 @import url(../blocks/form/__input-error/form__input-error.css);
 @import url(../blocks/form/__input-error/_active/form__input-error_active.css);
