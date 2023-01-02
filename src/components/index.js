@@ -1,7 +1,7 @@
-import './pages/index.css';
-import { renderCard } from './components/card.js';
-import { enableValidation, hideInputError } from './components/validate.js';
-import { openPopup, closePopup } from './components/modal.js'
+import '../pages/index.css';
+import { renderCard } from './card.js';
+import { enableValidation, hideInputError } from './validate.js';
+import { openPopup, closePopup } from './modal.js'
 
 const initialCards = [
     {
