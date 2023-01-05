@@ -1,0 +1,5 @@
+@media (max-width: 689px) {
+    .popup__container_mod-second {
+        min-height: 165px;
+    }
+}

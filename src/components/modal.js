@@ -1,7 +1,12 @@
+import { addPopupFormDelete } from './index.js'
+
 const popup = document.querySelectorAll('.popup')
 const popupBtnEscape = document.querySelectorAll('.popup__btn-escape')
 
-export const openPopup = (element) => {
+export const openPopup = (element, evt) => {
+    if (evt) {
+        addPopupFormDelete(evt);
+    }
     element.classList.add('popup_opened');
     document.addEventListener('keydown', closePopupKeyboard);
 }
@@ -24,7 +29,7 @@ const closePopupKeyboard = (evt) => {
 }
 
 popupBtnEscape.forEach((element) => {
-    element.addEventListener('click',  function () {
+    element.addEventListener('click', function () {
         closePopup(element.closest('.popup'));
     });
 })
