@@ -1,8 +1,9 @@
-import { profileTitle, profileSubtitle } from './index.js';
+import { profileTitle, profileSubtitle, profileAvatar } from './index.js';
 
 export const createProfile = (data) => {
     profileTitle.textContent = data.name;
     profileSubtitle.textContent = data.about;
+    profileAvatar.src = data.avatar;
 };
 
 export function renderLoading(isLoading, event) {
@@ -17,4 +18,15 @@ export function renderLoading(isLoading, event) {
             value.textContent = 'Сохранить';
         }
     }
+}
+
+export function request(url, options) {
+    return fetch(url, options).then(checkResponse)
+}
+
+function checkResponse(res) {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
 }

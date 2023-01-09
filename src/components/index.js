@@ -1,9 +1,9 @@
 import '../pages/index.css';
 import { enableValidation, hideInputError } from './validate.js';
 import { openPopup, closePopup } from './modal.js';
-import { getCard, getInfo, addInfo, addCard, addAvatar } from './api.js';
-import { handleDeleteCard, renderCard } from './card.js'
-import { createProfile, renderLoading } from './utils.js'
+import { getCard, getInfo, addInfo, addCard, addAvatar, deleteCard } from './api.js';
+import { renderCard } from './card.js'
+import { createProfile } from './utils.js'
 
 export let idUser;
 const popupInputPlace = document.querySelector('.popup__input_place');
@@ -20,8 +20,7 @@ const popupFormAvatar = document.querySelector('.popup__form_avatar');
 export const profileTitle = document.querySelector('.profile__title');
 export const profileSubtitle = document.querySelector('.profile__subtitle');
 export const popupDelete = document.querySelector('.popup_delete');
-const popupFormDelete = document.querySelector('.popup__form_delete')
-const profileAvatar = document.querySelector('.profile__avatar-picture');
+export const profileAvatar = document.querySelector('.profile__avatar-picture');
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupAddCard = document.querySelector('.popup_add-card');
 const popupAvatar = document.querySelector('.popup_avatar');
@@ -61,110 +60,72 @@ buttonOpenPopupCardEdit.addEventListener('click', function () {
 
 popupFormAvatar.addEventListener('submit', (event) => {
     event.preventDefault();
-    profileAvatar.src = popupInputAvatar.value;
-    // addAvatar();
-    closePopup(popupAvatar);
+    btnAvatar.textContent = 'Сохранение...';
+    console.log(popupInputAvatar.value)
+    addAvatar(popupInputAvatar.value)
+        .then((res) => {
+            console.log(res);
+            profileAvatar.src = popupInputAvatar.value;
+        })
+        .catch((err) => {
+            console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+            closePopup(popupAvatar);
+            btnAvatar.textContent = 'Сохранить';
+        });
+
 });
 
 popupFormEditCard.addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log(event.target)
-    profileTitle.textContent = popupInputName.value;
-    profileSubtitle.textContent = popupInputText.value;
-    renderLoading(true, event);
+    btnSave.textContent = 'Сохранение...';
     addInfo(popupInputName.value, popupInputText.value)
         .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .then((res) => {
-            console.log(res)
+            console.log(res);
+            profileTitle.textContent = popupInputName.value;
+            profileSubtitle.textContent = popupInputText.value;
         })
         .catch((err) => {
             console.log(`Ошибка: ${err}`);
         })
         .finally(() => {
-            renderLoading(false, event)
+            closePopup(popupEditProfile);
+            btnSave.textContent = 'Сохранить';
         });
-    closePopup(popupEditProfile);
 });
 
 popupFormAddCard.addEventListener("submit", (event) => {
     event.preventDefault();
-    renderLoading(true, event);
+    btnSubmit.textContent = 'Сохранение...';
     addCard(popupInputPlace.value, popupInputUrl.value)
         .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .then((res) => {
-            console.log(res)
+            console.log(res);
+            renderCard(res)
         })
         .catch((err) => {
             console.log(`Ошибка: ${err}`);
         })
         .finally(() => {
-            renderLoading(false, event);
+            closePopup(popupAddCard);
+            btnSubmit.textContent = 'Сохранить';
         });
-
-    setTimeout(() => {
-        getCard()
-            .then(res => {
-                console.log(res.status, res.statusText);
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            })
-            .then((result) => {
-                result.reverse().forEach((data) => {
-                    if (data.name == popupInputPlace.value) {
-                        renderCard(data)
-                    }
-                });
-            })
-            .catch((err) => {
-                console.log(`Ошибка: ${err}`);
-            });
-    }, "100")
-    closePopup(popupAddCard);
 });
 
-export function addPopupFormDelete(value) {
-    popupFormDelete.addEventListener("submit", (event) => {
-        event.preventDefault();
-        handleDeleteCard(value);
-        closePopup(popupDelete);
-    });
-}
-
 getInfo()
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-    })
     .then((result) => {
+        // console.log(result)
         idUser = result._id;
         createProfile(result);
+
     })
     .catch((err) => {
         console.log(`Ошибка: ${err}`);
     });
 
 getCard()
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-    })
     .then((result) => {
+        // console.log(result)
         result.reverse().forEach((data) => renderCard(data));
     })
     .catch((err) => {

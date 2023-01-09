@@ -1,12 +1,7 @@
-import { addPopupFormDelete } from './index.js'
-
 const popup = document.querySelectorAll('.popup')
 const popupBtnEscape = document.querySelectorAll('.popup__btn-escape')
 
-export const openPopup = (element, evt) => {
-    if (evt) {
-        addPopupFormDelete(evt);
-    }
+export const openPopup = (element) => {
     element.classList.add('popup_opened');
     document.addEventListener('keydown', closePopupKeyboard);
 }
