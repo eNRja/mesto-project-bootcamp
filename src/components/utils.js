@@ -8,11 +8,11 @@ export const setProfileData = (data) => {
 
 export function renderLoading(isLoading, button, buttonText, loadingText) {
     if (isLoading) {
-      button.textContent = loadingText
+        button.textContent = loadingText
     } else {
-      button.textContent = buttonText
+        button.textContent = buttonText
     }
-  }
+}
 
 export function request(url, options) {
     return fetch(url, options).then(checkResponse)

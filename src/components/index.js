@@ -75,7 +75,6 @@ popupFormEditCard.addEventListener('submit', (event) => {
         .then((res) => {
             console.log(res);
             closePopup(popupEditProfile);
-
             profileTitle.textContent = popupInputName.value;
             profileSubtitle.textContent = popupInputText.value;
         })
