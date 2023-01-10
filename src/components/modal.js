@@ -1,34 +1,28 @@
-const popup = document.querySelectorAll('.popup')
-const popupBtnEscape = document.querySelectorAll('.popup__btn-escape')
+const popups = document.querySelectorAll('.popup')
 
 export const openPopup = (element) => {
     element.classList.add('popup_opened');
-    document.addEventListener('keydown', closePopupKeyboard);
+    document.addEventListener('keydown', handleEscape);
 }
 
 export const closePopup = (element) => {
     element.classList.remove('popup_opened');
-    document.removeEventListener('keydown', closePopupKeyboard);
+    document.removeEventListener('keydown', handleEscape);
 }
 
-const closePopupFromEnywhere = (evt) => {
-    if (evt.target.classList.contains('popup')) {
-        closePopup(evt.target);
-    }
-}
-
-const closePopupKeyboard = (evt) => {
+const handleEscape = (evt) => {
     if (evt.key == 'Escape') {
         closePopup(document.querySelector('.popup_opened'));
     }
 }
 
-popupBtnEscape.forEach((element) => {
-    element.addEventListener('click', function () {
-        closePopup(element.closest('.popup'));
-    });
-})
-
-popup.forEach((element) => {
-    element.addEventListener('click', closePopupFromEnywhere);
-})
+popups.forEach((popup) => {
+    popup.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popup)
+        }
+        if (evt.target.classList.contains('popup__btn-escape')) {
+            closePopup(popup)
+        }
+    })
+}) 

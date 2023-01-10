@@ -41,6 +41,12 @@ const setEventListeners = (formElement, settings) => {
     const { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = settings;
     const inputList = Array.from(formElement.querySelectorAll(inputSelector));
     const buttonElement = formElement.querySelector(submitButtonSelector);
+    toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+    formElement.addEventListener('reset', () => {
+        setTimeout(() => {
+            toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+        }, 0);
+    });
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', function () {
             checkInputValidity(formElement, inputElement, { inputErrorClass, errorClass });
@@ -50,9 +56,9 @@ const setEventListeners = (formElement, settings) => {
 };
 
 export const enableValidation = (settings) => {
-    const { formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass } = settings;
+    const { formSelector } = settings;
     const formList = Array.from(document.querySelectorAll(formSelector));
     formList.forEach((formElement) => {
-        setEventListeners(formElement, { formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass });
+        setEventListeners(formElement, settings);
     });
 };

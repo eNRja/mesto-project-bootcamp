@@ -8,13 +8,13 @@ const config = {
     }
 }
 
-export const getCard = () => {
+export const getCards = () => {
     return request(`${config.baseUrl}/cards`, {
         headers: config.headers
     })
 }
 
-export const getInfo = () => {
+export const getUserInfo = () => {
     return request(`${config.baseUrl}/users/me`, {
         headers: config.headers
     })

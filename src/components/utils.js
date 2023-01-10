@@ -1,24 +1,18 @@
 import { profileTitle, profileSubtitle, profileAvatar } from './index.js';
 
-export const createProfile = (data) => {
+export const setProfileData = (data) => {
     profileTitle.textContent = data.name;
     profileSubtitle.textContent = data.about;
     profileAvatar.src = data.avatar;
 };
 
-export function renderLoading(isLoading, event) {
-    const value = event.target.querySelector('.popup__btn');
+export function renderLoading(isLoading, button, buttonText, loadingText) {
     if (isLoading) {
-        value.textContent = 'Сохранение...';
+      button.textContent = loadingText
+    } else {
+      button.textContent = buttonText
     }
-    else {
-        if (value.classList.contains('popup__btn_submit')) {
-            value.textContent = 'Создать';
-        } else {
-            value.textContent = 'Сохранить';
-        }
-    }
-}
+  }
 
 export function request(url, options) {
     return fetch(url, options).then(checkResponse)

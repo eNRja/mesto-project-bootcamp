@@ -1,11 +1,14 @@
 import '../pages/index.css';
 import { enableValidation, hideInputError } from './validate.js';
 import { openPopup, closePopup } from './modal.js';
-import { getCard, getInfo, addInfo, addCard, addAvatar, deleteCard } from './api.js';
+import { getCards, getUserInfo, addInfo, addCard, addAvatar, deleteCard } from './api.js';
 import { renderCard } from './card.js'
-import { createProfile } from './utils.js'
+import { setProfileData, renderLoading } from './utils.js'
 
 export let idUser;
+const textSave = 'Сохранить';
+const textSaving = 'Сохранение...';
+const textSubmit = 'Создать';
 const popupInputPlace = document.querySelector('.popup__input_place');
 const popupInputUrl = document.querySelector('.popup__input_url');
 const popupInputName = document.querySelector('.popup__input_name');
@@ -24,35 +27,29 @@ export const profileAvatar = document.querySelector('.profile__avatar-picture');
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupAddCard = document.querySelector('.popup_add-card');
 const popupAvatar = document.querySelector('.popup_avatar');
-const btnSubmit = document.querySelector('.popup__btn_submit');
-const btnSave = document.querySelector('.popup__btn_save');
-const btnAvatar = document.querySelector('.popup__btn_avatar');
+const popupBtnSubmit = document.querySelector('.popup__btn_submit');
+const popupbtnSave = document.querySelector('.popup__btn_save');
+const popupbtnAvatar = document.querySelector('.popup__btn_avatar');
 const subSettings = { inputErrorClass: 'popup__input_type_error', errorClass: 'form__input-error_active', inactiveButtonClass: 'popup__btn_inactive' };
 const { inactiveButtonClass, inputErrorClass, errorClass } = subSettings
 
+const disableButton = (button) => {
+    button.classList.add(inactiveButtonClass);
+    button.setAttribute('disabled', true);
+}
+
 buttonOpenPopupAvatar.addEventListener('click', function () {
-    btnAvatar.classList.add(inactiveButtonClass);
-    btnAvatar.setAttribute('disabled', true);
-    popupInputAvatar.value = '';
     hideInputError(popupFormAvatar, popupInputAvatar, { inputErrorClass, errorClass });
     openPopup(popupAvatar);
 });
 
 buttonOpenPopupCardAdd.addEventListener('click', function () {
-    btnSubmit.classList.add(inactiveButtonClass);
-    btnSubmit.setAttribute('disabled', true);
-    popupInputPlace.value = '';
-    popupInputUrl.value = '';
     hideInputError(popupFormAddCard, popupInputPlace, { inputErrorClass, errorClass });
     hideInputError(popupFormAddCard, popupInputUrl, { inputErrorClass, errorClass });
     openPopup(popupAddCard);
 });
 
 buttonOpenPopupCardEdit.addEventListener('click', function () {
-    popupInputName.value = profileTitle.textContent;
-    popupInputText.value = profileSubtitle.textContent;
-    btnSave.classList.remove(inactiveButtonClass);
-    btnSave.removeAttribute('disabled');
     hideInputError(popupFormEditCard, popupInputName, { inputErrorClass, errorClass });
     hideInputError(popupFormEditCard, popupInputText, { inputErrorClass, errorClass });
     openPopup(popupEditProfile);
@@ -60,29 +57,30 @@ buttonOpenPopupCardEdit.addEventListener('click', function () {
 
 popupFormAvatar.addEventListener('submit', (event) => {
     event.preventDefault();
-    btnAvatar.textContent = 'Сохранение...';
-    console.log(popupInputAvatar.value)
+    renderLoading(true, popupbtnAvatar, textSave, textSaving);
     addAvatar(popupInputAvatar.value)
         .then((res) => {
             console.log(res);
             profileAvatar.src = popupInputAvatar.value;
+            popupFormAvatar.reset();
+            closePopup(popupAvatar);
         })
         .catch((err) => {
             console.log(`Ошибка: ${err}`);
         })
         .finally(() => {
-            closePopup(popupAvatar);
-            btnAvatar.textContent = 'Сохранить';
+            renderLoading(false, popupbtnAvatar, textSave, textSaving);
         });
-
 });
 
 popupFormEditCard.addEventListener('submit', (event) => {
     event.preventDefault();
-    btnSave.textContent = 'Сохранение...';
+    renderLoading(true, popupbtnSave, textSave, textSaving);
     addInfo(popupInputName.value, popupInputText.value)
         .then((res) => {
             console.log(res);
+            closePopup(popupEditProfile);
+
             profileTitle.textContent = popupInputName.value;
             profileSubtitle.textContent = popupInputText.value;
         })
@@ -90,16 +88,16 @@ popupFormEditCard.addEventListener('submit', (event) => {
             console.log(`Ошибка: ${err}`);
         })
         .finally(() => {
-            closePopup(popupEditProfile);
-            btnSave.textContent = 'Сохранить';
+            renderLoading(false, popupbtnSave, textSave, textSaving);
         });
 });
 
 popupFormAddCard.addEventListener("submit", (event) => {
     event.preventDefault();
-    btnSubmit.textContent = 'Сохранение...';
+    renderLoading(true, popupBtnSubmit, textSubmit, textSaving);
     addCard(popupInputPlace.value, popupInputUrl.value)
         .then((res) => {
+            closePopup(popupAddCard);
             console.log(res);
             renderCard(res)
         })
@@ -107,28 +105,18 @@ popupFormAddCard.addEventListener("submit", (event) => {
             console.log(`Ошибка: ${err}`);
         })
         .finally(() => {
-            closePopup(popupAddCard);
-            btnSubmit.textContent = 'Сохранить';
+            popupFormAddCard.reset();
+            renderLoading(false, popupBtnSubmit, textSubmit, textSaving);
         });
 });
 
-getInfo()
-    .then((result) => {
-        // console.log(result)
-        idUser = result._id;
-        createProfile(result);
-
+Promise.all([getUserInfo(), getCards()])
+    .then(([userData, cards]) => {
+        idUser = userData._id;
+        setProfileData(userData);
+        cards.reverse().forEach(renderCard);
     })
-    .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-    });
-
-getCard()
-    .then((result) => {
-        // console.log(result)
-        result.reverse().forEach((data) => renderCard(data));
-    })
-    .catch((err) => {
+    .catch(err => {
         console.log(`Ошибка: ${err}`);
     });
 

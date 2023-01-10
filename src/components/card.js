@@ -1,7 +1,10 @@
 import { openPopup, closePopup } from './modal.js'
 import { createLike, deleteLike, deleteCard } from './api.js'
 import { popupDelete, idUser } from './index.js'
+import { renderLoading } from './utils.js'
 
+const textYes = 'Да';
+const textRemoving = 'Удаление...';
 const elements = document.querySelector(".elements__list");
 const template = document.querySelector("#element").content.querySelector(".element");
 const popupImage = document.querySelector('.popup__image');
@@ -13,26 +16,23 @@ const createCard = (data) => {
     const card = template.cloneNode(true);
     const elementFindImage = card.querySelector(".element__image");
     const elementBtnTrash = card.querySelector(".element__button-trash");
+    const elementCountHeart = card.querySelector('.element__count-heart');
+    const elementButtonHeart = card.querySelector('.element__button-heart');
     card.querySelector(".element__title").textContent = data.name;
     card.setAttribute('id', data._id);
     elementFindImage.src = data.link;
     elementFindImage.alt = data.name;
-    if (data._id) {
-        makeLikes(data, card);
-        if (data.likes.length !== 0) {
-            card.querySelector('.element__count-heart').textContent = data.likes.length
-        }
-        if (data.owner._id !== idUser) {
-            elementBtnTrash.remove();
-        } else {
-            elementBtnTrash.addEventListener("click", function gg(evt) {
-                evt.preventDefault();
-                confirmDeleteCard(card);
-                openPopup(popupDelete);
-            })
-        }
+    makeLikesColor(data, elementCountHeart, elementButtonHeart);
+    if (data.owner._id !== idUser) {
+        elementBtnTrash.remove();
+    } else {
+        elementBtnTrash.addEventListener("click", (evt) => {
+            evt.preventDefault();
+            confirmDeleteCard(card);
+            openPopup(popupDelete);
+        })
     }
-    card.querySelector(".element__button-heart").addEventListener("click", handleActivateLikeCard);
+    elementButtonHeart.addEventListener("click", () => handleActivateLikeCard(elementCountHeart, elementButtonHeart));
     elementFindImage.addEventListener("click", () => handlePicture(data));
     return card;
 };
@@ -47,63 +47,61 @@ const confirmDeleteCard = (card) => {
 
 const confirmDeleteCardIsConfirm = (event) => {
     event.preventDefault();
-    closePopup(popupDelete);
     confirmDeleteCardConfirmed(document.querySelector('.sure_for_remove'));
     popupBtnDeleteConfirm.removeEventListener("click", confirmDeleteCardIsConfirm)
 }
 
 const confirmDeleteCardConfirmed = (sureForRemove) => {
-    popupBtnDeleteConfirm.textContent = 'Удаление...';
+    renderLoading(true, popupBtnDeleteConfirm, textYes, textRemoving);
     deleteCard(sureForRemove.id)
         .then((res) => {
             console.log(res);
+            closePopup(popupDelete);
             sureForRemove.remove();
         })
         .catch((err) => {
             console.log(`Ошибка: ${err}`);
         })
         .finally(() => {
-            popupBtnDeleteConfirm.textContent = 'Да';
+            renderLoading(false, popupBtnDeleteConfirm, textYes, textRemoving);
         });
 }
 
-const makeLikes = (data, card) => {
+const makeLikesColor = (data, elementCountHeart, elementButtonHeart) => {
+    if (data.likes.length !== 0) {
+        elementCountHeart.textContent = data.likes.length
+    }
     data.likes.forEach((element) => {
         if (element._id === idUser) {
-            card.querySelector('.element__button-heart').classList.add("element__button-heart_active")
+            elementButtonHeart.classList.add("element__button-heart_active")
         }
     })
 }
 
-const handleActivateLikeCard = (event) => {
-    const counter = event.target.closest('.element__btn-count').querySelector('.element__count-heart');
-    if (!event.target.classList.contains("element__button-heart_active")) {
-        createLike(event.target.closest('.element').id)
+const handleActivateLikeCard = (elementCountHeart, elementButtonHeart) => {
+    if (elementButtonHeart.classList.contains("element__button-heart_active")) {
+        deleteLike(elementButtonHeart.closest('.element').id)
             .then((res) => {
                 console.log(res)
-                event.target.classList.toggle("element__button-heart_active");
-                counter.textContent = +counter.textContent + 1;
-            })
-            .catch((err) => {
-                console.log(`Ошибка: ${err}`);
-            })
-            .finally(() => {
-            });
-    } else {
-        deleteLike(event.target.closest('.element').id)
-            .then((res) => {
-                console.log(res)
-                event.target.classList.toggle("element__button-heart_active");
-                counter.textContent = +counter.textContent - 1;
-                if (counter.textContent == 0) {
-                    counter.textContent = '';
+                elementButtonHeart.classList.remove("element__button-heart_active");
+                elementCountHeart.textContent = res.likes.length;
+                if (res.likes.length == 0) {
+                    elementCountHeart.textContent = '';
                 }
             })
             .catch((err) => {
                 console.log(`Ошибка: ${err}`);
             })
-            .finally(() => {
-            });
+    } else {
+        createLike(elementButtonHeart.closest('.element').id)
+            .then((res) => {
+                console.log(res)
+                elementButtonHeart.classList.add("element__button-heart_active");
+                elementCountHeart.textContent = res.likes.length;
+            })
+            .catch((err) => {
+                console.log(`Ошибка: ${err}`);
+            })
     }
 };
 
