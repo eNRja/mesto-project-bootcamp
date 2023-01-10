@@ -33,11 +33,6 @@ const popupbtnAvatar = document.querySelector('.popup__btn_avatar');
 const subSettings = { inputErrorClass: 'popup__input_type_error', errorClass: 'form__input-error_active', inactiveButtonClass: 'popup__btn_inactive' };
 const { inactiveButtonClass, inputErrorClass, errorClass } = subSettings
 
-const disableButton = (button) => {
-    button.classList.add(inactiveButtonClass);
-    button.setAttribute('disabled', true);
-}
-
 buttonOpenPopupAvatar.addEventListener('click', function () {
     hideInputError(popupFormAvatar, popupInputAvatar, { inputErrorClass, errorClass });
     openPopup(popupAvatar);
