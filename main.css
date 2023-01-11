@@ -16,11 +16,11 @@
 .elements{max-width:880px;min-height:100vh}@media (max-width:900px){.elements{max-width:690px}}@media (max-width:689px){.elements{max-width:320px}}
 .elements__list{display:grid;gap:17px;grid-template-columns:repeat(3,1fr);list-style-type:none;margin-top:0;padding-left:0}@media (max-width:900px){.elements__list{grid-template-columns:repeat(2,1fr)}}@media (max-width:689px){.elements__list{gap:20px;grid-template-columns:repeat(1,1fr);margin-bottom:0}}
 .element{background-color:#fff;border-radius:15px;max-width:282px;min-height:361px}
-.element__button-trash{background-color:transparent;background-image:url(96f3e8182c3a9915dfee.png);background-repeat:no-repeat;background-size:cover;border:none;margin-left:244px;margin-top:20px;min-height:19px;min-width:18px;position:absolute;transition:.3s}.element__button-trash:hover{cursor:pointer;opacity:.6}
+.element__button-trash{background-color:transparent;background-image:url(96f3e8182c3a9915dfee.png);background-repeat:no-repeat;background-size:18px 19px;border:none;margin-left:244px;margin-top:20px;min-height:19px;min-width:18px;position:absolute;transition:.3s}.element__button-trash:hover{cursor:pointer;opacity:.6}
 .element__image{border-radius:15px 15px 0 0;display:flex;height:282px;-o-object-fit:cover;object-fit:cover;width:282px}.element__image:hover{cursor:pointer}
 .element__group{display:flex;justify-content:space-between;margin:0 20px 0 21px;max-width:246px}
 .element__title{color:#000;font-family:Inter,Arial,Helvetica,sans-serif;font-size:24px;font-style:normal;font-weight:900;line-height:29px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.element__button-heart{background-color:#fff;background-image:url(673fec9438deded16192.png);background-repeat:no-repeat;background-size:cover;border:none;margin-bottom:3px;min-height:19px;min-width:22px;transition:.3s}.element__button-heart:hover{cursor:pointer;opacity:.5}.element__button-heart:active{background-image:url(7d05f10516335c399062.png);opacity:1}
+.element__button-heart{background-color:#fff;background-image:url(673fec9438deded16192.png);background-repeat:no-repeat;background-size:22px 19px;border:none;margin-bottom:3px;min-height:19px;min-width:22px;transition:.3s}.element__button-heart:hover{cursor:pointer;opacity:.5}.element__button-heart:active{background-image:url(7d05f10516335c399062.png);opacity:1}
 .element__btn-count{align-items:center;display:flex;flex-direction:column;justify-content:center}
 .element__count-heart{color:#000;font-family:Inter,Arial,Helvetica,sans-serif;font-size:13px;font-style:normal;font-weight:400;line-height:16px;text-align:center}
 .element__button-heart_active{background-image:url(7d05f10516335c399062.png)}
