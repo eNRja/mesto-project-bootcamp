@@ -1,107 +1,80 @@
 import '../pages/index.css';
 import { enableValidation, hideInputError } from './validate.js';
 import { openPopup, closePopup } from './modal.js';
-import { getCards, getUserInfo, addInfo, addCard, addAvatar, deleteCard } from './api.js';
+import { getCards, getUserInfo, editProfile, addCard, editAvatar } from './api.js';
 import { renderCard } from './card.js'
-import { setProfileData, renderLoading } from './utils.js'
+import { setProfileData, handleError, handleSubmit } from './utils.js'
 
 export let idUser;
-const textSave = 'Сохранить';
-const textSaving = 'Сохранение...';
-const textSubmit = 'Создать';
-const popupInputPlace = document.querySelector('.popup__input_place');
-const popupInputUrl = document.querySelector('.popup__input_url');
-const popupInputName = document.querySelector('.popup__input_name');
-const popupInputText = document.querySelector('.popup__input_text');
+const popupPlace = document.querySelector('.popup__input_place');
+const popupUrl = document.querySelector('.popup__input_url');
+const popupName = document.querySelector('.popup__input_name');
+const popupProfession = document.querySelector('.popup__input_text');
 const popupInputAvatar = document.querySelector('.popup__input_avatar')
-const buttonOpenPopupCardEdit = document.querySelector('.profile__edit-button');
+const buttonOpenPopupProfileEdit = document.querySelector('.profile__edit-button');
 const buttonOpenPopupCardAdd = document.querySelector('.profile__add-button');
 const buttonOpenPopupAvatar = document.querySelector('.profile__avatar-overlay');
 const popupFormAddCard = document.querySelector('.popup__form_add-card');
 const popupFormEditCard = document.querySelector('.popup__form_edit-profile')
 const popupFormAvatar = document.querySelector('.popup__form_avatar');
-export const profileTitle = document.querySelector('.profile__title');
-export const profileSubtitle = document.querySelector('.profile__subtitle');
+export const profileName = document.querySelector('.profile__title');
+export const profileProfession = document.querySelector('.profile__subtitle');
 export const popupDelete = document.querySelector('.popup_delete');
 export const profileAvatar = document.querySelector('.profile__avatar-picture');
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupAddCard = document.querySelector('.popup_add-card');
 const popupAvatar = document.querySelector('.popup_avatar');
-const popupBtnSubmit = document.querySelector('.popup__btn_submit');
-const popupbtnSave = document.querySelector('.popup__btn_save');
-const popupbtnAvatar = document.querySelector('.popup__btn_avatar');
 const subSettings = { inputErrorClass: 'popup__input_type_error', errorClass: 'form__input-error_active', inactiveButtonClass: 'popup__btn_inactive' };
 const { inactiveButtonClass, inputErrorClass, errorClass } = subSettings
 
 buttonOpenPopupAvatar.addEventListener('click', function () {
-    hideInputError(popupFormAvatar, popupInputAvatar, { inputErrorClass, errorClass });
     openPopup(popupAvatar);
 });
 
 buttonOpenPopupCardAdd.addEventListener('click', function () {
-    hideInputError(popupFormAddCard, popupInputPlace, { inputErrorClass, errorClass });
-    hideInputError(popupFormAddCard, popupInputUrl, { inputErrorClass, errorClass });
     openPopup(popupAddCard);
 });
 
-buttonOpenPopupCardEdit.addEventListener('click', function () {
-    hideInputError(popupFormEditCard, popupInputName, { inputErrorClass, errorClass });
-    hideInputError(popupFormEditCard, popupInputText, { inputErrorClass, errorClass });
+buttonOpenPopupProfileEdit.addEventListener('click', function () {
+    popupName.value = profileName.textContent;
+    popupProfession.value = profileProfession.textContent;
+    hideInputError(popupFormEditCard, popupName, { inputErrorClass, errorClass });
+    hideInputError(popupFormEditCard, popupProfession, { inputErrorClass, errorClass });
     openPopup(popupEditProfile);
 });
 
-popupFormAvatar.addEventListener('submit', (event) => {
-    event.preventDefault();
-    renderLoading(true, popupbtnAvatar, textSave, textSaving);
-    addAvatar(popupInputAvatar.value)
-        .then((res) => {
-            console.log(res);
-            profileAvatar.src = popupInputAvatar.value;
-            popupFormAvatar.reset();
+popupFormAvatar.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    function makeRequest() {
+        return editAvatar(popupInputAvatar.value).then((userData) => {
+            profileAvatar.src = userData.avatar;
             closePopup(popupAvatar);
-        })
-        .catch((err) => {
-            console.log(`Ошибка: ${err}`);
-        })
-        .finally(() => {
-            renderLoading(false, popupbtnAvatar, textSave, textSaving);
         });
+    }
+    handleSubmit(makeRequest, evt);
 });
 
-popupFormEditCard.addEventListener('submit', (event) => {
-    event.preventDefault();
-    renderLoading(true, popupbtnSave, textSave, textSaving);
-    addInfo(popupInputName.value, popupInputText.value)
-        .then((res) => {
-            console.log(res);
+popupFormEditCard.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    function makeRequest() {
+        return editProfile(popupName.value, popupProfession.value).then((userData) => {
+            profileName.textContent = userData.name;
+            profileProfession.textContent = userData.about;
             closePopup(popupEditProfile);
-            profileTitle.textContent = popupInputName.value;
-            profileSubtitle.textContent = popupInputText.value;
-        })
-        .catch((err) => {
-            console.log(`Ошибка: ${err}`);
-        })
-        .finally(() => {
-            renderLoading(false, popupbtnSave, textSave, textSaving);
         });
+    }
+    handleSubmit(makeRequest, evt);
 });
 
-popupFormAddCard.addEventListener("submit", (event) => {
-    event.preventDefault();
-    renderLoading(true, popupBtnSubmit, textSubmit, textSaving);
-    addCard(popupInputPlace.value, popupInputUrl.value)
-        .then((res) => {
+popupFormAddCard.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    function makeRequest() {
+        return addCard(popupPlace.value, popupUrl.value).then((cardData) => {
+            renderCard(cardData)
             closePopup(popupAddCard);
-            console.log(res);
-            renderCard(res)
-        })
-        .catch((err) => {
-            console.log(`Ошибка: ${err}`);
-        })
-        .finally(() => {
-            popupFormAddCard.reset();
-            renderLoading(false, popupBtnSubmit, textSubmit, textSaving);
         });
+    }
+    handleSubmit(makeRequest, evt);
 });
 
 Promise.all([getUserInfo(), getCards()])
@@ -110,9 +83,7 @@ Promise.all([getUserInfo(), getCards()])
         setProfileData(userData);
         cards.reverse().forEach(renderCard);
     })
-    .catch(err => {
-        console.log(`Ошибка: ${err}`);
-    });
+    .catch(handleError)
 
 enableValidation({
     formSelector: '.popup__form',

@@ -20,7 +20,7 @@ export const getUserInfo = () => {
     })
 }
 
-export const addInfo = (nameValue, aboutValue) => {
+export const editProfile = (nameValue, aboutValue) => {
     return request(`${config.baseUrl}/users/me`, {
         method: 'PATCH',
         headers: config.headers,
@@ -29,7 +29,7 @@ export const addInfo = (nameValue, aboutValue) => {
 }
 
 // https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg
-export const addAvatar = (link) => {
+export const editAvatar = (link) => {
     return request(`${config.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         headers: config.headers,

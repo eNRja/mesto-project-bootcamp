@@ -1,7 +1,7 @@
 import { openPopup, closePopup } from './modal.js'
 import { createLike, deleteLike, deleteCard } from './api.js'
 import { popupDelete, idUser } from './index.js'
-import { renderLoading } from './utils.js'
+import { renderLoading, handleError } from './utils.js'
 
 const textYes = 'Да';
 const textRemoving = 'Удаление...';
@@ -54,14 +54,11 @@ const confirmDeleteCardIsConfirm = (event) => {
 const confirmDeleteCardConfirmed = (sureForRemove) => {
     renderLoading(true, popupBtnDeleteConfirm, textYes, textRemoving);
     deleteCard(sureForRemove.id)
-        .then((res) => {
-            console.log(res);
+        .then((message) => {
             closePopup(popupDelete);
             sureForRemove.remove();
         })
-        .catch((err) => {
-            console.log(`Ошибка: ${err}`);
-        })
+        .catch(handleError)
         .finally(() => {
             renderLoading(false, popupBtnDeleteConfirm, textYes, textRemoving);
         });
@@ -81,27 +78,21 @@ const makeLikesColor = (data, elementCountHeart, elementButtonHeart) => {
 const handleActivateLikeCard = (elementCountHeart, elementButtonHeart) => {
     if (elementButtonHeart.classList.contains("element__button-heart_active")) {
         deleteLike(elementButtonHeart.closest('.element').id)
-            .then((res) => {
-                console.log(res)
+            .then((cardData) => {
                 elementButtonHeart.classList.remove("element__button-heart_active");
-                elementCountHeart.textContent = res.likes.length;
-                if (res.likes.length == 0) {
+                elementCountHeart.textContent = cardData.likes.length;
+                if (cardData.likes.length == 0) {
                     elementCountHeart.textContent = '';
                 }
             })
-            .catch((err) => {
-                console.log(`Ошибка: ${err}`);
-            })
+            .catch(handleError)
     } else {
         createLike(elementButtonHeart.closest('.element').id)
-            .then((res) => {
-                console.log(res)
+            .then((cardData) => {
                 elementButtonHeart.classList.add("element__button-heart_active");
-                elementCountHeart.textContent = res.likes.length;
+                elementCountHeart.textContent = cardData.likes.length;
             })
-            .catch((err) => {
-                console.log(`Ошибка: ${err}`);
-            })
+            .catch(handleError)
     }
 };
 
