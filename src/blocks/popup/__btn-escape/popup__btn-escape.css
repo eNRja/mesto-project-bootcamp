@@ -19,6 +19,7 @@
 
 @media (max-width: 689px) {
     .popup__btn-escape {
+        background-size: 20px 20px;
         min-width: 20px;
         min-height: 20px;
         top: -36px;
